@@ -1,3 +1,4 @@
+layout: default
 # U.M.E.R. Engine
 > **A Deterministic, Sort-Free Architecture for High-Density Physical & Agentic Systems**
 
