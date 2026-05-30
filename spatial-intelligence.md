@@ -18,8 +18,8 @@ To test the engine's capability for wide-radius information gathering, it was de
 * **Absolute Query Stability:** The emergence of uniform motion proves that the memory addressing flawlessly delivers wide-radius neighbor data without dropping queries or fragmenting the flocks.
 
 ### 🛤️ Wavefront Pathfinding
-* **Giga-Node Throughput:** By reducing neighbor lookups to an $O(1)$ operation, the engine executed agentic neighbor discovery at a rate of 127.99 GNode/s on NVIDIA Pascal hardware[cite: 1342, 1347].
-* **Unified Execution:** Completely mitigated PCIe bus transfer bottlenecks by fusing the agentic decision-making logic directly into the same GPU compute kernel as the spatial framework[cite: 1335, 1336].
+* **Giga-Node Throughput:** By reducing neighbor lookups to an O(1) operation, the engine executed agentic neighbor discovery at a rate of 127.99 GNode/s on NVIDIA Pascal hardware.
+* **Unified Execution:** Completely mitigated PCIe bus transfer bottlenecks by fusing the agentic decision-making logic directly into the same GPU compute kernel as the spatial framework.
 
 ---
 *Powered by the U.M.E.R. Engine*
