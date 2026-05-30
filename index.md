@@ -12,10 +12,10 @@ For decades, massive-scale physical simulations and AI navigation frameworks hav
 
 ### 🚀 The Paradigm Shift
 * **SOLVED the Sorting Bottleneck:** Bypassed O(N log N) tree-rebuilds and multiple-pass radix sorts, replacing them with a flat, pointerless O(N) Prefix-Sum topology.
-* **SHATTERED Grid & Collision Limits:** Eliminated strict artificial grid boundaries to support infinite spatial domains, and resolved hash collisions definitively using $O(1)$ deterministic collision tolerance rather than expensive, stochastic avoidance algorithms.
 * **SURPASSED Industry Standards:** Benchmarked directly against NVIDIA Warp, achieving a 1.52x computational speedup in dynamic 3D regimes and a 2.3x reduction in energy consumption.
 * **ELIMINATED the PCIe Bottleneck:** Fused agentic decision-making directly with spatial logic, killing the CPU-to-GPU data transfer lag that historically chokes dense crowd simulations.
 * **ACHIEVED Deterministic Emergence:** Replaced stochastic neural networks and NavMeshes with deterministic, training-free spatial intelligence—simulating 500,000 complex AI agents navigating flawlessly at a sustained 125 FPS.
+* **SHATTERED Grid & Collision Limits:** Eliminated strict artificial grid boundaries to support infinite spatial domains, and resolved hash collisions definitively using O(1) deterministic collision tolerance rather than expensive, stochastic avoidance algorithms.
 
 ---
 
