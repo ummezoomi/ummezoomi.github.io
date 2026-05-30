@@ -14,7 +14,8 @@ The following empirical telemetry was logged across distinct GPU architectures. 
 
 ### 🧠 Agentic Navigation & AI Limits
 * **Maximum Frame Rate:** Sustained a strict 125 FPS executing a massive-scale (500,000 agents) wide-radius flocking algorithm.
-* **Node Discovery Ceiling:** * NVIDIA Pascal (P100): Executed 6-way spatial neighbor queries at 127.99 GNode/s.
+* **Node Discovery Ceiling:** 
+  * NVIDIA Pascal (P100): Executed 6-way spatial neighbor queries at 127.99 GNode/s.
   * NVIDIA Turing (T4): Executed 6-way spatial neighbor queries at 76.35 GNode/s.
 
 ### 🔋 Power & Hardware Utilization
