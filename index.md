@@ -3,7 +3,7 @@ layout: default
 title: Muhammad Umer - HPC & AI Researcher
 ---
 
-# Muhammad Umer | High-Performance Computing & AI Researcher
+# High-Performance Computing & AI Researcher
 > **Specializing in GPU architecture, deterministic spatial AI, and algorithmic scaling.**
 
 My research focuses on a concept called **Spatial Intelligence (SI)**. Instead of relying heavily on probabilistic AI models that require extensive training and act as "black boxes," I build architectures that treat data mathematically as physical matter. By mapping complex data into highly optimized spatial topologies, we can solve Kinematic, Computer Vision, and Machine Learning problems deterministically on bare-metal hardware.
