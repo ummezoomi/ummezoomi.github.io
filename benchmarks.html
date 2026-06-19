@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Benchmarks & Telemetry — U.M.E.R. Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #76b900;
+    --green-bright: #92e500;
+    --green-dim: #4a7300;
+    --green-glow: rgba(118, 185, 0, 0.15);
+    --blue: #5eadf0;
+    --blue-glow: rgba(94,173,240,0.12);
+    --amber: #e09840;
+    --amber-glow: rgba(224,152,64,0.12);
+    --bg: #0a0a0b;
+    --bg2: #111114;
+    --bg3: #18181c;
+    --bg4: #1e1e24;
+    --border: rgba(255,255,255,0.06);
+    --border-green: rgba(118,185,0,0.25);
+    --border-blue: rgba(94,173,240,0.2);
+    --text: #e8e8e0;
+    --text-muted: #888880;
+    --text-dim: #555550;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,11,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .site-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .back-link {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--green); }
+
+  /* ── LAYOUT ── */
+  .site-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    padding: 72px 0 56px;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--green);
+  }
+  .page-title {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+  .page-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 580px;
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+
+  /* DOI badge */
+  .doi-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg3);
+    border: 1px solid var(--border-blue);
+    border-radius: 8px;
+    padding: 12px 18px;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .doi-badge:hover {
+    background: var(--bg4);
+    border-color: var(--blue);
+  }
+  .doi-badge .doi-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blue);
+    background: var(--blue-glow);
+    padding: 3px 8px;
+    border-radius: 4px;
+  }
+  .doi-badge .doi-url {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .doi-badge svg {
+    color: var(--text-dim);
+    flex-shrink: 0;
+  }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ── SECTION ── */
+  section { padding: 60px 0; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 60px;
+  }
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 1.75rem;
+  }
+
+  /* ── METRIC CARDS ── */
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .metric-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .metric-card {
+    background: var(--bg2);
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .metric-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--green);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .metric-card:hover::after { opacity: 1; }
+  .metric-card .hw-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+  .tag-pascal { background: rgba(118,185,0,0.1); color: var(--green); }
+  .tag-cdna3  { background: rgba(224,152,64,0.12); color: var(--amber); }
+  .tag-turing { background: rgba(94,173,240,0.1); color: var(--blue); }
+  .tag-system { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+
+  .metric-card .val {
+    font-family: var(--mono);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .metric-card .val .unit {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+  .metric-card .desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+  .metric-card .bar-track {
+    height: 2px;
+    background: var(--bg4);
+    border-radius: 99px;
+    margin-top: 14px;
+  }
+  .metric-card .bar-fill {
+    height: 2px;
+    border-radius: 99px;
+    background: var(--green);
+    width: 0;
+    transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+  }
+  .bar-fill.blue { background: var(--blue); }
+  .bar-fill.amber { background: var(--amber); }
+
+  /* ── COMPARISON ROW ── */
+  .compare-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .compare-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 0;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.5rem;
+  }
+  .compare-header span {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .compare-header span:not(:first-child) { text-align: right; }
+
+  .compare-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 0;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row:hover { background: var(--bg3); }
+  .compare-row .metric-name {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+  .compare-row .umer-val {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--green);
+    text-align: right;
+  }
+  .compare-row .base-val {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    text-align: right;
+  }
+
+  /* ── DATA TABLE (neighbor queries) ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  .data-table thead tr {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0.75rem 1.25rem;
+    text-align: left;
+    font-weight: 400;
+  }
+  .data-table th:not(:first-child) { text-align: right; }
+  .data-table td {
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+  }
+  .data-table td:not(:first-child) { text-align: right; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--bg3); }
+  .data-table .hi {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--green);
+  }
+  .data-table .hw-chip {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .table-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 0;
+  }
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-left {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .footer-right a {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border-green);
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+  .footer-right a:hover { background: var(--green-glow); }
+
+  /* ── REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .reveal.in-view { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+
+  @media (max-width: 640px) {
+    .metric-grid { grid-template-columns: 1fr 1fr; }
+    .metric-grid.cols-2 { grid-template-columns: 1fr; }
+    .compare-header, .compare-row { grid-template-columns: 1fr 1fr; }
+    .compare-header span:first-child,
+    .compare-row .metric-name { display: none; }
+    .footer-inner { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="site-logo">U.M.E.R // UMER</a>
+    <a href="index.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7H1M7 13L1 7l6-6"/></svg>
+      Back to Overview
+    </a>
+  </div>
+</header>
+
+<main>
+  <div class="site-wrap">
+
+    <!-- ── PAGE HERO ── -->
+    <div class="page-hero">
+      <div class="hero-eyebrow">Empirical Telemetry — Stress-Test Configurations</div>
+      <h1 class="page-title">Benchmarks &<br>Raw Throughput Data</h1>
+      <p class="page-sub">
+        Performance logged across distinct GPU architectures under extreme stress-testing. All figures represent maximum capacities of the U.M.E.R. engine.
+      </p>
+
+      <a href="https://doi.org/10.21203/rs.3.rs-9848255/v1" target="_blank" rel="noopener" class="doi-badge">
+        <span class="doi-label">DOI</span>
+        <span class="doi-url">10.21203/rs.3.rs-9848255/v1</span>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 1h10v10M13 1L1 13"/></svg>
+      </a>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- ── MACROSCOPIC THROUGHPUT ── -->
+    <section>
+      <p class="section-label">Physics Integration</p>
+      <h2 class="section-title">Macroscopic Throughput</h2>
+
+      <div class="metric-grid reveal">
+        <div class="metric-card">
+          <span class="hw-tag tag-pascal">NVIDIA Pascal · Tesla P100</span>
+          <div class="val">21,933 <span class="unit">MCell/s</span></div>
+          <div class="desc">Raw 1D physics integration throughput — peak output on legacy architecture.</div>
+          <div class="bar-track"><div class="bar-fill" data-width="100"></div></div>
+        </div>
+        <div class="metric-card">
+          <span class="hw-tag tag-cdna3">AMD CDNA3 · MI300X</span>
+          <div class="val">18,102 <span class="unit">MCell/s</span></div>
+          <div class="desc">Sustained macroscopic throughput on AMD's data-center flagship.</div>
+          <div class="bar-track"><div class="bar-fill amber" data-width="82"></div></div>
+        </div>
+        <div class="metric-card">
+          <span class="hw-tag tag-system">3D Temporal Coherence</span>
+          <div class="val">5,815 <span class="unit">MCell/s</span></div>
+          <div class="desc">Realistic 3D environments — <strong style="color:var(--green)">1.52× speedup</strong> vs NVIDIA Warp baseline.</div>
+          <div class="bar-track"><div class="bar-fill" data-width="26"></div></div>
+        </div>
+      </div>
+
+      <!-- vs Warp comparison -->
+      <div class="compare-block reveal reveal-delay-1">
+        <div class="compare-header">
+          <span>Metric</span>
+          <span>U.M.E.R.</span>
+          <span>NVIDIA Warp</span>
+        </div>
+        <div class="compare-row">
+          <span class="metric-name">3D topology throughput</span>
+          <span class="umer-val">5,815.3 MCell/s</span>
+          <span class="base-val">~3,825 MCell/s</span>
+        </div>
+        <div class="compare-row">
+          <span class="metric-name">Speedup factor</span>
+          <span class="umer-val">1.52×</span>
+          <span class="base-val">1.00×</span>
+        </div>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ── AGENTIC NAVIGATION ── -->
+    <section>
+      <p class="section-label">Agentic Navigation & AI Limits</p>
+      <h2 class="section-title">Spatial Neighbor Queries</h2>
+
+      <div class="metric-grid cols-2 reveal">
+        <div class="metric-card">
+          <span class="hw-tag tag-system">Maximum Frame Rate</span>
+          <div class="val">125 <span class="unit">FPS</span></div>
+          <div class="desc">Sustained while executing a wide-radius flocking algorithm across <strong style="color:var(--text)">500,000 concurrent agents</strong>.</div>
+          <div class="bar-track"><div class="bar-fill" data-width="100"></div></div>
+        </div>
+        <div class="metric-card">
+          <span class="hw-tag tag-system">Agent Count</span>
+          <div class="val">500K <span class="unit">agents</span></div>
+          <div class="desc">Massive-scale simulation with complex inter-agent interaction — no frame-rate degradation.</div>
+          <div class="bar-track"><div class="bar-fill" data-width="100"></div></div>
+        </div>
+      </div>
+
+      <div class="table-wrap reveal reveal-delay-1">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Hardware</th>
+              <th>Query Type</th>
+              <th>Throughput</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="hw-chip">NVIDIA Pascal · P100</span></td>
+              <td>6-way spatial neighbor</td>
+              <td class="hi">127.99 GNode/s</td>
+            </tr>
+            <tr>
+              <td><span class="hw-chip">NVIDIA Turing · T4</span></td>
+              <td>6-way spatial neighbor</td>
+              <td class="hi">76.35 GNode/s</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <hr class="section-divider">
+
+    <!-- ── POWER & UTILIZATION ── */-->
+    <section>
+      <p class="section-label">Power & Hardware Utilization</p>
+      <h2 class="section-title">Energy Efficiency & Cache Bandwidth</h2>
+
+      <div class="compare-block reveal">
+        <div class="compare-header">
+          <span>Efficiency Metric</span>
+          <span>U.M.E.R.</span>
+          <span>Baseline</span>
+        </div>
+        <div class="compare-row">
+          <span class="metric-name">Energy efficiency</span>
+          <span class="umer-val">53.9 MCell/W</span>
+          <span class="base-val">35.0 MCell/W</span>
+        </div>
+        <div class="compare-row">
+          <span class="metric-name">Power draw (coherent regime)</span>
+          <span class="umer-val">108.0 W</span>
+          <span class="base-val">109.5 W</span>
+        </div>
+        <div class="compare-row">
+          <span class="metric-name">Warp Execution Efficiency</span>
+          <span class="umer-val">95.8%</span>
+          <span class="base-val">—</span>
+        </div>
+      </div>
+
+      <div class="table-wrap reveal reveal-delay-1">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Hardware</th>
+              <th>Effective Cache Bandwidth</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="hw-chip">NVIDIA Pascal · P100</span></td>
+              <td class="hi">2,068.87 GB/s</td>
+            </tr>
+            <tr>
+              <td><span class="hw-chip">NVIDIA Turing · T4</span></td>
+              <td class="hi">1,578.25 GB/s</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="metric-grid cols-2 reveal reveal-delay-2">
+        <div class="metric-card">
+          <span class="hw-tag tag-system">Warp Execution Efficiency</span>
+          <div class="val">95.8 <span class="unit">%</span></div>
+          <div class="desc">Near-perfect parallel lockstep evaluation. Proves critical branch divergence is effectively eliminated.</div>
+          <div class="bar-track"><div class="bar-fill" data-width="95.8"></div></div>
+        </div>
+        <div class="metric-card">
+          <span class="hw-tag tag-system">Energy Reduction</span>
+          <div class="val">2.3<span class="unit">×</span></div>
+          <div class="desc">Overall energy consumption factor versus conventional spatial compute baseline.</div>
+          <div class="bar-track"><div class="bar-fill" data-width="77"></div></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="site-wrap">
+    <div class="footer-inner">
+      <span class="footer-left">Powered by the U.M.E.R. Engine · Muhammad Umer</span>
+      <div class="footer-right">
+        <a href="index.html">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6H1M5 1L1 6l4 5"/></svg>
+          Back to Main Overview
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── PARTICLE BACKGROUND ── */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const mouse = { x: -999, y: -999 };
+  const GREEN = '118, 185, 0';
+  const N = 55;
+
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  function makeParticle() {
+    return { x: Math.random()*W, y: Math.random()*H, vx:(Math.random()-.5)*.18, vy:(Math.random()-.5)*.18, r:Math.random()*1.2+.3, a:Math.random()*.35+.05 };
+  }
+  resize();
+  for (let i=0;i<N;i++) particles.push(makeParticle());
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', e => { mouse.x=e.clientX; mouse.y=e.clientY; });
+
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    for (let i=0;i<particles.length;i++) {
+      for (let j=i+1;j<particles.length;j++) {
+        const p=particles[i], q=particles[j];
+        const dx=p.x-q.x, dy=p.y-q.y, dist=Math.sqrt(dx*dx+dy*dy);
+        if (dist<140) { ctx.strokeStyle=`rgba(${GREEN},${(1-dist/140)*.08})`; ctx.lineWidth=.5; ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke(); }
+      }
+      const dx=particles[i].x-mouse.x, dy=particles[i].y-mouse.y, md=Math.sqrt(dx*dx+dy*dy);
+      if (md<120) { ctx.beginPath(); ctx.arc(particles[i].x,particles[i].y,3,0,Math.PI*2); ctx.fillStyle=`rgba(${GREEN},${(1-md/120)*.25})`; ctx.fill(); }
+    }
+    for (const p of particles) {
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=`rgba(${GREEN},${p.a})`; ctx.fill();
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W) p.vx*=-1;
+      if(p.y<0||p.y>H) p.vy*=-1;
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ── SCROLL REVEAL + BAR ANIMATION ── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in-view');
+      e.target.querySelectorAll('.bar-fill').forEach(bar => {
+        setTimeout(() => { bar.style.width = bar.dataset.width + '%'; }, 200);
+      });
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
