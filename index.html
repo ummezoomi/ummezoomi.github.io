@@ -25,11 +25,11 @@
     --mono: 'JetBrains Mono', monospace;
     --sans: 'Inter', -apple-system, sans-serif;
   }
- 
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
   html { scroll-behavior: smooth; }
- 
+
   body {
     background: var(--bg);
     color: var(--text);
@@ -39,7 +39,7 @@
     min-height: 100vh;
     overflow-x: hidden;
   }
- 
+
   /* ── CANVAS BACKGROUND ── */
   #bg-canvas {
     position: fixed;
@@ -47,7 +47,7 @@
     z-index: 0;
     pointer-events: none;
   }
- 
+
   /* ── LAYOUT ── */
   .site-wrap {
     position: relative;
@@ -56,7 +56,7 @@
     margin: 0 auto;
     padding: 0 2rem;
   }
- 
+
   /* ── HEADER / NAV ── */
   .site-header {
     position: sticky;
@@ -98,7 +98,7 @@
     transition: color 0.2s;
   }
   .site-nav a:hover { color: var(--green); }
- 
+
   /* ── HERO ── */
   .hero {
     padding: 100px 0 80px;
@@ -145,7 +145,7 @@
     color: var(--text);
     font-weight: 500;
   }
- 
+
   /* stat pills */
   .hero-stats {
     display: flex;
@@ -174,7 +174,7 @@
     color: var(--text-dim);
     letter-spacing: 0.05em;
   }
- 
+
   .hero-cta {
     display: inline-flex;
     align-items: center;
@@ -195,14 +195,14 @@
     transform: translateY(-1px);
   }
   .hero-cta svg { width: 14px; height: 14px; }
- 
+
   /* ── DIVIDER ── */
   .section-divider {
     border: none;
     border-top: 1px solid var(--border);
     margin: 0;
   }
- 
+
   /* ── SECTION ── */
   section {
     padding: 80px 0;
@@ -239,7 +239,7 @@
     max-width: 600px;
     margin-bottom: 3rem;
   }
- 
+
   /* ── ABOUT BLOCK ── */
   .about-grid {
     display: grid;
@@ -274,7 +274,7 @@
     color: var(--text);
     font-weight: 500;
   }
- 
+
   /* ── UMER ENGINE ── */
   .problems-grid {
     display: grid;
@@ -345,7 +345,7 @@
     color: var(--green);
     font-weight: 600;
   }
- 
+
   /* benchmark bar */
   .bench-strip {
     background: var(--bg2);
@@ -388,7 +388,7 @@
     width: 0;
     transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
- 
+
   /* ── PIPELINES ── */
   .pipeline-list {
     display: flex;
@@ -435,7 +435,7 @@
   .tag-kinematics { background: rgba(118,185,0,0.12); color: var(--green); }
   .tag-vision { background: rgba(59,139,212,0.12); color: #5eadf0; }
   .tag-ml { background: rgba(186,117,23,0.12); color: #e09840; }
- 
+
   .pipeline-item h3 {
     font-size: 1.1rem;
     font-weight: 600;
@@ -467,7 +467,7 @@
     color: var(--text-muted);
     line-height: 1.65;
   }
- 
+
   /* ── FOOTER ── */
   footer {
     border-top: 1px solid var(--border);
@@ -500,7 +500,7 @@
   footer .footer-right a:hover {
     background: var(--green-glow);
   }
- 
+
   /* ── GLOW UNDERLINE ── */
   .glow-line {
     display: block;
@@ -510,7 +510,7 @@
     margin-top: 2px;
     opacity: 0.4;
   }
- 
+
   /* ── RESPONSIVE ── */
   @media (max-width: 640px) {
     .about-grid { grid-template-columns: 1fr; }
@@ -521,7 +521,76 @@
     .site-nav { display: none; }
     footer .footer-inner { flex-direction: column; gap: 1rem; }
   }
- 
+
+  /* ── PUBLICATIONS ── */
+  .pub-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .pub-item {
+    background: var(--bg2);
+    padding: 1.75rem 2rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.25rem;
+    align-items: start;
+    transition: background 0.2s;
+  }
+  .pub-item:hover { background: var(--bg3); }
+  .pub-status-col { padding-top: 2px; }
+  .pub-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 4px;
+    white-space: nowrap;
+    display: inline-block;
+  }
+  .status-submitted {
+    background: rgba(94,173,240,0.1);
+    color: #5eadf0;
+    border: 1px solid rgba(94,173,240,0.2);
+  }
+  .status-wip {
+    background: rgba(224,152,64,0.1);
+    color: #e09840;
+    border: 1px solid rgba(224,152,64,0.2);
+  }
+  .pub-body {}
+  .pub-title {
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.45;
+    margin-bottom: 0.4rem;
+  }
+  .pub-venue {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+  .pub-venue a {
+    color: var(--green);
+    text-decoration: none;
+  }
+  .pub-venue a:hover { text-decoration: underline; }
+  .pub-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    padding-top: 3px;
+  }
+
   /* ── SCROLL ANIMATION ── */
   .reveal {
     opacity: 0;
@@ -538,10 +607,10 @@
 </style>
 </head>
 <body>
- 
+
 <!-- Particle canvas background -->
 <canvas id="bg-canvas"></canvas>
- 
+
 <!-- Header -->
 <header class="site-header">
   <div class="header-inner">
@@ -550,32 +619,33 @@
       <ul class="site-nav">
         <li><a href="#engine">Engine</a></li>
         <li><a href="#pipelines">Pipelines</a></li>
+        <li><a href="#publications">Publications</a></li>
         <li><a href="benchmarks.html">Preprint →</a></li>
       </ul>
     </nav>
   </div>
 </header>
- 
+
 <!-- Main -->
 <main>
   <div class="site-wrap">
- 
+
     <!-- ── HERO ── -->
     <section class="hero">
       <div class="hero-eyebrow">Muhammad Umer — HPC & AI Researcher</div>
- 
+
       <h1 class="hero-title">
         Spatial Intelligence<br>
         <span>on bare metal.</span>
       </h1>
- 
+
       <p class="hero-sub">
         Instead of probabilistic "black boxes," I build architectures that treat data
         <strong>mathematically as physical matter</strong> — mapping complex datasets into
         optimized spatial topologies to solve kinematic, vision, and ML problems
         <strong>deterministically</strong>, without prior training.
       </p>
- 
+
       <div class="hero-stats">
         <div class="stat-pill">
           <span class="val">125 FPS</span>
@@ -594,15 +664,15 @@
           <span class="lbl">energy reduction</span>
         </div>
       </div>
- 
+
       <a href="benchmarks.html" class="hero-cta">
         Read Supercomputing Preprint
         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h12M7 1l6 6-6 6"/></svg>
       </a>
     </section>
- 
+
     <hr class="section-divider">
- 
+
     <!-- ── ABOUT ── -->
     <section id="about">
       <p class="section-label">Spatial Intelligence</p>
@@ -610,7 +680,7 @@
       <p class="section-intro">
         Standard ML treats data as statistics. Spatial Intelligence treats it as matter with mass, position, and gravitational pull.
       </p>
- 
+
       <div class="about-grid reveal">
         <div class="about-card">
           <h3>// The Problem with Probabilistic AI</h3>
@@ -634,9 +704,9 @@
         </div>
       </div>
     </section>
- 
+
     <hr class="section-divider">
- 
+
     <!-- ── ENGINE ── -->
     <section id="engine">
       <p class="section-label">U.M.E.R. Engine</p>
@@ -644,9 +714,9 @@
       <p class="section-intro">
         Uniform Memory Encoded Representation — a custom framework that attacks every bottleneck in traditional physics and AI engines simultaneously.
       </p>
- 
+
       <div class="problems-grid reveal">
- 
+
         <div class="problem-card" onclick="toggleCard(this)">
           <div class="card-num">01</div>
           <h3>
@@ -659,7 +729,7 @@
             </div>
           </div>
         </div>
- 
+
         <div class="problem-card" onclick="toggleCard(this)">
           <div class="card-num">02</div>
           <h3>
@@ -672,7 +742,7 @@
             </div>
           </div>
         </div>
- 
+
         <div class="problem-card" onclick="toggleCard(this)">
           <div class="card-num">03</div>
           <h3>
@@ -685,7 +755,7 @@
             </div>
           </div>
         </div>
- 
+
         <div class="problem-card" onclick="toggleCard(this)">
           <div class="card-num">04</div>
           <h3>
@@ -698,9 +768,9 @@
             </div>
           </div>
         </div>
- 
+
       </div>
- 
+
       <!-- Benchmarks -->
       <div class="bench-strip reveal reveal-delay-1">
         <div class="bench-metric">
@@ -719,11 +789,11 @@
           <div class="bench-bar-track"><div class="bench-bar-fill" data-width="62"></div></div>
         </div>
       </div>
- 
+
     </section>
- 
+
     <hr class="section-divider">
- 
+
     <!-- ── PIPELINES ── -->
     <section id="pipelines">
       <p class="section-label">Spatial Intelligence Pipelines</p>
@@ -731,9 +801,9 @@
       <p class="section-intro">
         The U.M.E.R. Engine as a foundation for replacing probabilistic ML with geometry.
       </p>
- 
+
       <div class="pipeline-list">
- 
+
         <div class="pipeline-item reveal">
           <div>
             <span class="pipeline-tag tag-kinematics">High-DoF Robotics</span>
@@ -747,7 +817,7 @@
             <p>Environments map as physical obstacles in a 30-dimensional space. Using continuous <em>gravitational repulsion</em>, an agent computes a safe path instantly — no training data, no neural network, no latency cliff.</p>
           </div>
         </div>
- 
+
         <div class="pipeline-item reveal reveal-delay-1">
           <div>
             <span class="pipeline-tag tag-vision">Computer Vision</span>
@@ -761,7 +831,7 @@
             <p>Explicit mathematical features (texture density, edge maps) are extracted and mapped into a physical 4D space. Classification is proximity to historical data — the full reasoning chain is geometric and auditable.</p>
           </div>
         </div>
- 
+
         <div class="pipeline-item reveal reveal-delay-2">
           <div>
             <span class="pipeline-tag tag-ml">Tabular ML</span>
@@ -775,13 +845,88 @@
             <p>Data maps into a physical universe. Classification runs on gravitational pull from neighboring data points, with a decay rate that attenuates noise and amplifies the most locally relevant features.</p>
           </div>
         </div>
- 
+
       </div>
     </section>
- 
+
+    <hr class="section-divider">
+
+    <!-- ── PUBLICATIONS ── -->
+    <section id="publications">
+      <p class="section-label">Research Output</p>
+      <h2 class="section-title">Publications & Work in Progress</h2>
+      <p class="section-intro">
+        2 papers under review, 4 in active development — expanding Spatial Intelligence across hardware, vision, ML, and astrophysics.
+      </p>
+
+      <!-- Submitted -->
+      <div class="pub-list reveal">
+
+        <div class="pub-item">
+          <div class="pub-status-col"><span class="pub-status status-submitted">Submitted</span></div>
+          <div class="pub-body">
+            <div class="pub-title">U.M.E.R: A Deterministic Sort-Free Architecture for High-Density Physical & Agentic Systems</div>
+            <div class="pub-venue">Journal of Supercomputing · <a href="https://doi.org/10.21203/rs.3.rs-9848255/v1" target="_blank" rel="noopener">doi:10.21203/rs.3.rs-9848255/v1 ↗</a></div>
+          </div>
+          <div class="pub-num">01</div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-status-col"><span class="pub-status status-submitted">Submitted</span></div>
+          <div class="pub-body">
+            <div class="pub-title">Observation of a Residual Attenuation Independent of Wavelength Correlated with Solar Proximity in Interferometric Visibilities</div>
+            <div class="pub-venue">Journal of Astrophysics and Astronomy</div>
+          </div>
+          <div class="pub-num">02</div>
+        </div>
+
+      </div>
+
+      <!-- In Progress -->
+      <div class="pub-list reveal reveal-delay-1">
+
+        <div class="pub-item">
+          <div class="pub-status-col"><span class="pub-status status-wip">In Progress</span></div>
+          <div class="pub-body">
+            <div class="pub-title">U.M.E.R. as a Spatial Intelligence Alternative for Tabular Datasets: A White-Box Approach</div>
+            <div class="pub-venue">Replacing probabilistic feature models with gravitational topology</div>
+          </div>
+          <div class="pub-num">03</div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-status-col"><span class="pub-status status-wip">In Progress</span></div>
+          <div class="pub-body">
+            <div class="pub-title">U.M.E.R. as a Spatial Intelligence Alternative for Computer Vision: Replacing Neural Networks</div>
+            <div class="pub-venue">Deterministic 4D feature-space classification without convolutional layers</div>
+          </div>
+          <div class="pub-num">04</div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-status-col"><span class="pub-status status-wip">In Progress</span></div>
+          <div class="pub-body">
+            <div class="pub-title">U.M.E.R. as a Spatial Intelligence Alternative for Reinforcement Learning in Robotics</div>
+            <div class="pub-venue">Training-free high-DoF path planning via gravitational repulsion fields</div>
+          </div>
+          <div class="pub-num">05</div>
+        </div>
+
+        <div class="pub-item">
+          <div class="pub-status-col"><span class="pub-status status-wip">In Progress</span></div>
+          <div class="pub-body">
+            <div class="pub-title">Transforming U.M.E.R. Logic to a VLSI Chip: 5-Clock-Per-Cycle Execution</div>
+            <div class="pub-venue">Silicon implementation of sort-free spatial compute at bare-metal clock speeds</div>
+          </div>
+          <div class="pub-num">06</div>
+        </div>
+
+      </div>
+    </section>
+
   </div><!-- /site-wrap -->
 </main>
- 
+
 <!-- Footer -->
 <footer>
   <div class="site-wrap">
@@ -796,7 +941,7 @@
     </div>
   </div>
 </footer>
- 
+
 <script>
 /* ── PARTICLE BACKGROUND ── */
 (function() {
@@ -805,12 +950,12 @@
   let W, H, particles = [], mouse = { x: -999, y: -999 };
   const GREEN = '118, 185, 0';
   const N = 55;
- 
+
   function resize() {
     W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
   }
- 
+
   function makeParticle() {
     return {
       x: Math.random() * W,
@@ -821,16 +966,16 @@
       a: Math.random() * 0.35 + 0.05,
     };
   }
- 
+
   resize();
   for (let i = 0; i < N; i++) particles.push(makeParticle());
- 
+
   window.addEventListener('resize', () => { resize(); });
   window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
- 
+
   function draw() {
     ctx.clearRect(0, 0, W, H);
- 
+
     // Draw connections
     for (let i = 0; i < particles.length; i++) {
       for (let j = i + 1; j < particles.length; j++) {
@@ -858,25 +1003,25 @@
         ctx.fill();
       }
     }
- 
+
     // Draw particles
     for (const p of particles) {
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${GREEN}, ${p.a})`;
       ctx.fill();
- 
+
       p.x += p.vx;
       p.y += p.vy;
       if (p.x < 0 || p.x > W) p.vx *= -1;
       if (p.y < 0 || p.y > H) p.vy *= -1;
     }
- 
+
     requestAnimationFrame(draw);
   }
   draw();
 })();
- 
+
 /* ── ACCORDION ── */
 function toggleCard(el) {
   const isOpen = el.classList.contains('is-open');
@@ -884,7 +1029,7 @@ function toggleCard(el) {
   document.querySelectorAll('.problem-card.is-open').forEach(c => c.classList.remove('is-open'));
   if (!isOpen) el.classList.add('is-open');
 }
- 
+
 /* ── SCROLL REVEAL ── */
 const revealEls = document.querySelectorAll('.reveal');
 const obs = new IntersectionObserver(entries => {
@@ -901,7 +1046,7 @@ const obs = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.12 });
 revealEls.forEach(el => obs.observe(el));
- 
+
 /* ── BENCH BAR trigger if already in view on load ── */
 setTimeout(() => {
   document.querySelectorAll('.bench-bar-fill').forEach(bar => {
