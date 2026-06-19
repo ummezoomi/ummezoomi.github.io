@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muhammad Umer — HPC & AI Researcher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #76b900;
+    --green-bright: #92e500;
+    --green-dim: #4a7300;
+    --green-glow: rgba(118, 185, 0, 0.15);
+    --bg: #0a0a0b;
+    --bg2: #111114;
+    --bg3: #18181c;
+    --bg4: #1e1e24;
+    --border: rgba(255,255,255,0.06);
+    --border-green: rgba(118,185,0,0.25);
+    --text: #e8e8e0;
+    --text-muted: #888880;
+    --text-dim: #555550;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+ 
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+ 
+  /* ── CANVAS BACKGROUND ── */
+  #bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+ 
+  /* ── LAYOUT ── */
+  .site-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+ 
+  /* ── HEADER / NAV ── */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,11,0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .site-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+  .site-nav {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .site-nav a {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    transition: color 0.2s;
+  }
+  .site-nav a:hover { color: var(--green); }
+ 
+  /* ── HERO ── */
+  .hero {
+    padding: 100px 0 80px;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--green);
+  }
+  .hero-title {
+    font-size: clamp(2.6rem, 6vw, 4.4rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    color: #fff;
+  }
+  .hero-title span {
+    color: var(--green);
+    position: relative;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    max-width: 640px;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+  }
+  .hero-sub strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+ 
+  /* stat pills */
+  .hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 3rem;
+  }
+  .stat-pill {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .stat-pill .val {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+  }
+  .stat-pill .lbl {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+ 
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green);
+    color: #000;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    letter-spacing: 0.04em;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .hero-cta:hover {
+    background: var(--green-bright);
+    transform: translateY(-1px);
+  }
+  .hero-cta svg { width: 14px; height: 14px; }
+ 
+  /* ── DIVIDER ── */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+ 
+  /* ── SECTION ── */
+  section {
+    padding: 80px 0;
+  }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 60px;
+  }
+  .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #fff;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  .section-intro {
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin-bottom: 3rem;
+  }
+ 
+  /* ── ABOUT BLOCK ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .about-card {
+    background: var(--bg2);
+    padding: 2rem;
+  }
+  .about-card:last-child {
+    background: var(--bg3);
+  }
+  .about-card h3 {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .about-card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+  .about-card p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+ 
+  /* ── UMER ENGINE ── */
+  .problems-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+  }
+  .problem-card {
+    background: var(--bg2);
+    padding: 1.75rem 2rem;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .problem-card:hover { background: var(--bg3); }
+  .problem-card.is-open { background: var(--bg3); }
+  .problem-card .card-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+  .problem-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .problem-card h3 .chevron {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    color: var(--text-dim);
+    transition: transform 0.25s, color 0.2s;
+  }
+  .problem-card.is-open h3 .chevron {
+    transform: rotate(180deg);
+    color: var(--green);
+  }
+  .problem-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, opacity 0.25s;
+    opacity: 0;
+  }
+  .problem-card.is-open .problem-answer {
+    max-height: 300px;
+    opacity: 1;
+  }
+  .problem-answer-inner {
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .problem-answer-inner strong {
+    color: var(--green);
+    font-weight: 600;
+  }
+ 
+  /* benchmark bar */
+  .bench-strip {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .bench-metric { }
+  .bench-metric .bm-val {
+    font-family: var(--mono);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .bench-metric .bm-unit {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--green-dim);
+  }
+  .bench-metric .bm-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .bench-bar-track {
+    height: 3px;
+    background: var(--bg4);
+    border-radius: 99px;
+    margin-top: 10px;
+  }
+  .bench-bar-fill {
+    height: 3px;
+    border-radius: 99px;
+    background: var(--green);
+    width: 0;
+    transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+ 
+  /* ── PIPELINES ── */
+  .pipeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .pipeline-item {
+    background: var(--bg2);
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+    position: relative;
+  }
+  .pipeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--bg4);
+    transition: background 0.3s;
+  }
+  .pipeline-item:hover::before {
+    background: var(--green);
+  }
+  .pipeline-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    display: inline-block;
+  }
+  .tag-kinematics { background: rgba(118,185,0,0.12); color: var(--green); }
+  .tag-vision { background: rgba(59,139,212,0.12); color: #5eadf0; }
+  .tag-ml { background: rgba(186,117,23,0.12); color: #e09840; }
+ 
+  .pipeline-item h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .pipeline-problem {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+  .pipeline-solution-box {
+    background: var(--bg3);
+    border: 1px solid var(--border-green);
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+  .pipeline-solution-box .sol-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+    font-weight: 700;
+  }
+  .pipeline-solution-box p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+ 
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 0;
+    text-align: center;
+  }
+  footer .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  footer .footer-left {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  footer .footer-right a {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border-green);
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+  }
+  footer .footer-right a:hover {
+    background: var(--green-glow);
+  }
+ 
+  /* ── GLOW UNDERLINE ── */
+  .glow-line {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--green) 0%, transparent 100%);
+    margin-top: 2px;
+    opacity: 0.4;
+  }
+ 
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .problems-grid { grid-template-columns: 1fr; }
+    .pipeline-item { grid-template-columns: 1fr; gap: 1.25rem; }
+    .bench-strip { grid-template-columns: 1fr; gap: 1.5rem; }
+    .hero-title { font-size: 2.2rem; }
+    .site-nav { display: none; }
+    footer .footer-inner { flex-direction: column; gap: 1rem; }
+  }
+ 
+  /* ── SCROLL ANIMATION ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.in-view {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+</style>
+</head>
+<body>
+ 
+<!-- Particle canvas background -->
+<canvas id="bg-canvas"></canvas>
+ 
+<!-- Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="#" class="site-logo">U.M.E.R // UMER</a>
+    <nav>
+      <ul class="site-nav">
+        <li><a href="#engine">Engine</a></li>
+        <li><a href="#pipelines">Pipelines</a></li>
+        <li><a href="benchmarks.html">Preprint →</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+ 
+<!-- Main -->
+<main>
+  <div class="site-wrap">
+ 
+    <!-- ── HERO ── -->
+    <section class="hero">
+      <div class="hero-eyebrow">Muhammad Umer — HPC & AI Researcher</div>
+ 
+      <h1 class="hero-title">
+        Spatial Intelligence<br>
+        <span>on bare metal.</span>
+      </h1>
+ 
+      <p class="hero-sub">
+        Instead of probabilistic "black boxes," I build architectures that treat data
+        <strong>mathematically as physical matter</strong> — mapping complex datasets into
+        optimized spatial topologies to solve kinematic, vision, and ML problems
+        <strong>deterministically</strong>, without prior training.
+      </p>
+ 
+      <div class="hero-stats">
+        <div class="stat-pill">
+          <span class="val">125 FPS</span>
+          <span class="lbl">500K complex agents</span>
+        </div>
+        <div class="stat-pill">
+          <span class="val">1.52×</span>
+          <span class="lbl">speedup vs NVIDIA Warp</span>
+        </div>
+        <div class="stat-pill">
+          <span class="val">21,933</span>
+          <span class="lbl">MCell/s on Pascal</span>
+        </div>
+        <div class="stat-pill">
+          <span class="val">2.3×</span>
+          <span class="lbl">energy reduction</span>
+        </div>
+      </div>
+ 
+      <a href="benchmarks.html" class="hero-cta">
+        Read Supercomputing Preprint
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h12M7 1l6 6-6 6"/></svg>
+      </a>
+    </section>
+ 
+    <hr class="section-divider">
+ 
+    <!-- ── ABOUT ── -->
+    <section id="about">
+      <p class="section-label">Spatial Intelligence</p>
+      <h2 class="section-title">Physics, not probability.</h2>
+      <p class="section-intro">
+        Standard ML treats data as statistics. Spatial Intelligence treats it as matter with mass, position, and gravitational pull.
+      </p>
+ 
+      <div class="about-grid reveal">
+        <div class="about-card">
+          <h3>// The Problem with Probabilistic AI</h3>
+          <p>
+            Modern deep learning models are <strong>black boxes</strong> — they require enormous compute to train, produce outputs we can't fully explain, and behave unpredictably at the edges of their training distribution.
+          </p>
+          <br>
+          <p>
+            Physics simulations face similar bottlenecks: sorting agents every frame, managing hash collisions, and fighting CPU→GPU transfer latency that caps throughput.
+          </p>
+        </div>
+        <div class="about-card">
+          <h3>// The SI Approach</h3>
+          <p>
+            <strong>Spatial Intelligence</strong> encodes data as physical entities in a mathematical space. Classification becomes proximity. Decision-making becomes gravitational repulsion. Pattern-matching becomes geometric topology.
+          </p>
+          <br>
+          <p>
+            The result: problems solvable <strong>deterministically</strong>, with full transparency, on bare-metal hardware — no training, no black boxes.
+          </p>
+        </div>
+      </div>
+    </section>
+ 
+    <hr class="section-divider">
+ 
+    <!-- ── ENGINE ── -->
+    <section id="engine">
+      <p class="section-label">U.M.E.R. Engine</p>
+      <h2 class="section-title">Sort-free spatial compute.</h2>
+      <p class="section-intro">
+        Uniform Memory Encoded Representation — a custom framework that attacks every bottleneck in traditional physics and AI engines simultaneously.
+      </p>
+ 
+      <div class="problems-grid reveal">
+ 
+        <div class="problem-card" onclick="toggleCard(this)">
+          <div class="card-num">01</div>
+          <h3>
+            Sorting Bottlenecks
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </h3>
+          <div class="problem-answer">
+            <div class="problem-answer-inner">
+              Traditional grids rebuild from scratch every frame — O(n log n) work regardless of how much the scene changed. U.M.E.R. uses a <strong>flat, pointerless Delta-Histogram topology</strong>: only agents that actually cross spatial boundaries trigger a memory update. Static scenes cost virtually nothing.
+            </div>
+          </div>
+        </div>
+ 
+        <div class="problem-card" onclick="toggleCard(this)">
+          <div class="card-num">02</div>
+          <h3>
+            Hashing Collisions
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </h3>
+          <div class="problem-answer">
+            <div class="problem-answer-inner">
+              Instead of expensive collision avoidance algorithms or memory-heavy chaining, U.M.E.R. resolves hash collisions natively via a <strong>deterministic, hardware-level collision tolerance system</strong> — trading probabilistic handling for guaranteed correctness at the silicon level.
+            </div>
+          </div>
+        </div>
+ 
+        <div class="problem-card" onclick="toggleCard(this)">
+          <div class="card-num">03</div>
+          <h3>
+            Strict Grid Limitations
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </h3>
+          <div class="problem-answer">
+            <div class="problem-answer-inner">
+              Standard spatial grids degrade badly when data clusters in one region. U.M.E.R. removes artificial bounding boxes entirely, supporting a <strong>theoretically infinite spatial domain</strong> that absorbs localized density without bloating global memory.
+            </div>
+          </div>
+        </div>
+ 
+        <div class="problem-card" onclick="toggleCard(this)">
+          <div class="card-num">04</div>
+          <h3>
+            CPU-to-GPU Transfer Latency
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg>
+          </h3>
+          <div class="problem-answer">
+            <div class="problem-answer-inner">
+              By co-locating agent decision-making logic with spatial sorting <strong>directly on the GPU</strong>, U.M.E.R. eliminates the PCIe bottleneck entirely. The result: 125 FPS while simulating 500,000 complex agents — a workload that would saturate PCIe bandwidth under any conventional architecture.
+            </div>
+          </div>
+        </div>
+ 
+      </div>
+ 
+      <!-- Benchmarks -->
+      <div class="bench-strip reveal reveal-delay-1">
+        <div class="bench-metric">
+          <div class="bm-val">1.52<span class="bm-unit">×</span></div>
+          <div class="bm-label">Computational speedup vs NVIDIA Warp baseline in dynamic 3D scenarios</div>
+          <div class="bench-bar-track"><div class="bench-bar-fill" data-width="76"></div></div>
+        </div>
+        <div class="bench-metric">
+          <div class="bm-val">21,933 <span class="bm-unit">MCell/s</span></div>
+          <div class="bm-label">Throughput on NVIDIA Pascal (legacy hardware)</div>
+          <div class="bench-bar-track"><div class="bench-bar-fill" data-width="88"></div></div>
+        </div>
+        <div class="bench-metric">
+          <div class="bm-val">2.3<span class="bm-unit">×</span></div>
+          <div class="bm-label">Reduction in energy consumption versus conventional execution</div>
+          <div class="bench-bar-track"><div class="bench-bar-fill" data-width="62"></div></div>
+        </div>
+      </div>
+ 
+    </section>
+ 
+    <hr class="section-divider">
+ 
+    <!-- ── PIPELINES ── -->
+    <section id="pipelines">
+      <p class="section-label">Spatial Intelligence Pipelines</p>
+      <h2 class="section-title">Deterministic alternatives<br>to ML's hardest problems.</h2>
+      <p class="section-intro">
+        The U.M.E.R. Engine as a foundation for replacing probabilistic ML with geometry.
+      </p>
+ 
+      <div class="pipeline-list">
+ 
+        <div class="pipeline-item reveal">
+          <div>
+            <span class="pipeline-tag tag-kinematics">High-DoF Robotics</span>
+            <h3>30-Dimensional path planning</h3>
+            <p class="pipeline-problem">
+              Traditional Reinforcement Learning requires massive compute to train robotic arms and can still behave unpredictably. Real-time re-planning under novel constraints is effectively impossible without retraining.
+            </p>
+          </div>
+          <div class="pipeline-solution-box">
+            <div class="sol-label">// U.M.E.R. Solution</div>
+            <p>Environments map as physical obstacles in a 30-dimensional space. Using continuous <em>gravitational repulsion</em>, an agent computes a safe path instantly — no training data, no neural network, no latency cliff.</p>
+          </div>
+        </div>
+ 
+        <div class="pipeline-item reveal reveal-delay-1">
+          <div>
+            <span class="pipeline-tag tag-vision">Computer Vision</span>
+            <h3>Transparent 4D image classification</h3>
+            <p class="pipeline-problem">
+              Deep learning classifiers process images through opaque convolutional layers. When the model is wrong, there is no explanation — and no principled way to fix it.
+            </p>
+          </div>
+          <div class="pipeline-solution-box">
+            <div class="sol-label">// U.M.E.R. Solution</div>
+            <p>Explicit mathematical features (texture density, edge maps) are extracted and mapped into a physical 4D space. Classification is proximity to historical data — the full reasoning chain is geometric and auditable.</p>
+          </div>
+        </div>
+ 
+        <div class="pipeline-item reveal reveal-delay-2">
+          <div>
+            <span class="pipeline-tag tag-ml">Tabular ML</span>
+            <h3>Gravitational feature weighting</h3>
+            <p class="pipeline-problem">
+              Standard models dilute strong predictive features when large tabular datasets are noisy — weak correlations add variance and erode accuracy without a principled way to filter them.
+            </p>
+          </div>
+          <div class="pipeline-solution-box">
+            <div class="sol-label">// U.M.E.R. Solution</div>
+            <p>Data maps into a physical universe. Classification runs on gravitational pull from neighboring data points, with a decay rate that attenuates noise and amplifies the most locally relevant features.</p>
+          </div>
+        </div>
+ 
+      </div>
+    </section>
+ 
+  </div><!-- /site-wrap -->
+</main>
+ 
+<!-- Footer -->
+<footer>
+  <div class="site-wrap">
+    <div class="footer-inner">
+      <span class="footer-left">© 2025 Muhammad Umer — HPC & AI Research</span>
+      <div class="footer-right">
+        <a href="benchmarks.html">
+          Supercomputing Journal Preprint & Benchmarks
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h10M6 1l5 5-5 5"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+ 
+<script>
+/* ── PARTICLE BACKGROUND ── */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], mouse = { x: -999, y: -999 };
+  const GREEN = '118, 185, 0';
+  const N = 55;
+ 
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+ 
+  function makeParticle() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.18,
+      vy: (Math.random() - 0.5) * 0.18,
+      r: Math.random() * 1.2 + 0.3,
+      a: Math.random() * 0.35 + 0.05,
+    };
+  }
+ 
+  resize();
+  for (let i = 0; i < N; i++) particles.push(makeParticle());
+ 
+  window.addEventListener('resize', () => { resize(); });
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+ 
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+ 
+    // Draw connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const p = particles[i], q = particles[j];
+        const dx = p.x - q.x, dy = p.y - q.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 140) {
+          const alpha = (1 - dist / 140) * 0.08;
+          ctx.strokeStyle = `rgba(${GREEN}, ${alpha})`;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.stroke();
+        }
+      }
+      // Mouse proximity glow
+      const dx = particles[i].x - mouse.x, dy = particles[i].y - mouse.y;
+      const md = Math.sqrt(dx * dx + dy * dy);
+      if (md < 120) {
+        const ma = (1 - md / 120) * 0.25;
+        ctx.beginPath();
+        ctx.arc(particles[i].x, particles[i].y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${GREEN}, ${ma})`;
+        ctx.fill();
+      }
+    }
+ 
+    // Draw particles
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${GREEN}, ${p.a})`;
+      ctx.fill();
+ 
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    }
+ 
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+ 
+/* ── ACCORDION ── */
+function toggleCard(el) {
+  const isOpen = el.classList.contains('is-open');
+  // close all
+  document.querySelectorAll('.problem-card.is-open').forEach(c => c.classList.remove('is-open'));
+  if (!isOpen) el.classList.add('is-open');
+}
+ 
+/* ── SCROLL REVEAL ── */
+const revealEls = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in-view');
+      // animate bench bars once in view
+      e.target.querySelectorAll('.bench-bar-fill').forEach(bar => {
+        setTimeout(() => {
+          bar.style.width = bar.dataset.width + '%';
+        }, 200);
+      });
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => obs.observe(el));
+ 
+/* ── BENCH BAR trigger if already in view on load ── */
+setTimeout(() => {
+  document.querySelectorAll('.bench-bar-fill').forEach(bar => {
+    const rect = bar.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      bar.style.width = bar.dataset.width + '%';
+    }
+  });
+}, 600);
+</script>
+</body>
+</html>
